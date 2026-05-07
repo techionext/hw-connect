@@ -71,11 +71,13 @@ export class ConnectionUseCase {
 
 	async execute(request: Request, _response: Response) {
 		const {
-			query: { orderId, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token },
+			query: { orderId, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, ...rest },
 		} = ZODVerifyParse({
 			schema: ConnectionRequestSchema,
 			request,
 		});
+
+		console.log({ rest });
 
 		const dataOrders = await this.GetOrderById(orderId);
 
