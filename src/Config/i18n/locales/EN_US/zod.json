@@ -1,0 +1,58 @@
+{
+	"expected": {
+		"boolean": "true or false",
+		"string": "a text",
+		"number": "a number",
+		"bigint": "a big number",
+		"object": "an object",
+		"array": "an array",
+		"date": "a date",
+		"function": "a function",
+		"symbol": "a symbol",
+		"null": "null",
+		"undefined": "undefined"
+	},
+	"received": {
+		"boolean": "a boolean value",
+		"string": "a text",
+		"number": "a number",
+		"bigint": "a big number",
+		"object": "an object",
+		"array": "an array",
+		"date": "a date",
+		"function": "a function",
+		"symbol": "a symbol",
+		"null": "null",
+		"undefined": "undefined"
+	},
+
+	"invalid_type": "Field '{{field}}' must be {{expected}}, received {{received}}",
+	"invalid_type_received_undefined": "Field '{{field}}' is required",
+	"invalid_literal": "Field '{{field}}' must be exactly {{expected}}",
+
+	"invalid_string": "Field '{{field}}' must be a valid {{validation}}",
+	"invalid_email": "Field '{{field}}' must be a valid email",
+	"invalid_url": "Field '{{field}}' must be a valid URL",
+	"invalid_regex": "Field '{{field}}' must match regex /{{regex}}/",
+	"invalid_uuid": "Field '{{field}}' must be a valid UUID",
+	"invalid_cuid": "Field '{{field}}' must be a valid CUID",
+
+	"too_small_string": "Field '{{field}}' must be at least {{minimum}} characters",
+	"too_small_number": "Field '{{field}}' must be at least {{minimum}}",
+	"too_small_array": "Field '{{field}}' must contain at least {{minimum}} items",
+	"too_big_string": "Field '{{field}}' must be at most {{maximum}} characters",
+	"too_big_number": "Field '{{field}}' must be at most {{maximum}}",
+	"too_big_array": "Field '{{field}}' must contain at most {{maximum}} items",
+	"not_multiple_of": "Field '{{field}}' must be multiple of {{multipleOf}}",
+
+	"invalid_date": "Field '{{field}}' must be a valid date",
+
+	"invalid_enum_value": "Invalid value for field '{{field}}'. Allowed: {{options}}",
+	"invalid_union": "Field '{{field}}' didn't match any valid type",
+	"invalid_union_discriminator": "Invalid discriminator value for field '{{field}}'",
+
+	"unrecognized_keys": "Field '{{field}}' contains unrecognized keys: {{keys}}",
+
+	"custom": "Field '{{field}}' is invalid",
+	"body_failed": "Validation failed"
+}

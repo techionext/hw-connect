@@ -1,0 +1,115 @@
+// import type { $Enums } from "@prisma/client";
+
+// // ITEM_POSTED; /// Objeto postado
+// // FORWARDED; /// Encaminhado
+// // RECEIVED_AT_PROCESSING_UNIT_OR_DISTRIBUTION_CENTER; /// Recebido na unidade de tratamento / centro de distribuição
+// // DELIVERY_NOT_COMPLETED_UNSUCCESSFUL_ATTEMPT; /// Entrega não efetuada tentativa de entrega sem sucesso
+// // AWAITING_PICKUP; /// Aguardando retirada
+// // ITEM_IN_TRANSIT_PLEASE_WAIT; /// Objeto em trânsito / por favor aguarde
+// // ITEM_DELIVERED_TO_RECIPIENT; /// Objeto entregue ao destinatário
+// // ITEM_RETURNED_TO_SENDER; /// Objeto devolvido ao remetente
+// export const CorreiosNormalEventMapper: Record<string, $Enums.correiosStatus> = {
+// 	"PO-09": "ITEM_POSTED",
+// 	"PO-02": "ITEM_POSTED",
+// 	"PO-01": "ITEM_POSTED",
+
+// 	"LDI-14": "FORWARDED",
+// 	"LDI-13": "FORWARDED",
+// 	"LDI-11": "FORWARDED",
+// 	"TRI-00": "FORWARDED",
+// 	"RO-01": "FORWARDED",
+
+// 	"FC-10": "RECEIVED_AT_PROCESSING_UNIT_OR_DISTRIBUTION_CENTER",
+
+// 	"BDE-77": "AWAITING_PICKUP",
+// 	"BDI-77": "AWAITING_PICKUP",
+// 	"BDR-77": "AWAITING_PICKUP",
+// 	"BDR-24": "AWAITING_PICKUP",
+// 	"LDI-04": "AWAITING_PICKUP",
+// 	"LDI-03": "AWAITING_PICKUP",
+// 	"LDI-02": "AWAITING_PICKUP",
+// 	"LDI-01": "AWAITING_PICKUP",
+// 	"FC-26": "AWAITING_PICKUP",
+// 	"BDE-24": "AWAITING_PICKUP",
+// 	"BDI-24": "AWAITING_PICKUP",
+
+// 	"PAR-02": "ITEM_IN_TRANSIT_PLEASE_WAIT",
+// 	"CAR-05": "ITEM_IN_TRANSIT_PLEASE_WAIT",
+
+// 	"BDE-70": "ITEM_DELIVERED_TO_RECIPIENT",
+// 	"BDI-70": "ITEM_DELIVERED_TO_RECIPIENT",
+// 	"CO-08": "ITEM_DELIVERED_TO_RECIPIENT",
+// 	"BDI-00": "ITEM_DELIVERED_TO_RECIPIENT",
+// 	"BDI-01": "ITEM_DELIVERED_TO_RECIPIENT",
+// 	"BDE-00": "ITEM_DELIVERED_TO_RECIPIENT",
+// 	"BDE-01": "ITEM_DELIVERED_TO_RECIPIENT",
+// 	"BDR-01": "ITEM_DELIVERED_TO_RECIPIENT",
+// 	"BDR-70": "ITEM_DELIVERED_TO_RECIPIENT",
+// };
+
+// // CLIENT_REFUSED_TO_RECEIVE; /// Cliente recusou a receber
+// // AWAITING_PICKUP; /// Aguardando retirada
+// // PICKUP_DEADLINE_EXPIRED; /// Prazo de retirada encerrado
+// // OUT_OF_POSTAL_FLOW; /// Fora do fluxo postal
+// // CUSTOMER_WANTS_TO_RETURN; /// Cliente quer devolver * nao tem um status assim no correios
+// // ITEM_RETURNED_TO_SENDER; /// Objeto devolvido ao remetente
+// // RECIPIENT_ABSENT; /// Destinatário ausente
+// // INCORRECT_ADDRESS; /// Endereço incorreto
+// // MAIL_CARRIER_NOT_ASSISTED; /// Carteiro não atendido
+// export const CorreiosFrustratedEventMapper: Record<string, $Enums.frustratedStatus> = {
+// 	"BDR-04": "CLIENT_REFUSED_TO_RECEIVE",
+// 	"BDE-04": "CLIENT_REFUSED_TO_RECEIVE",
+// 	"BDI-04": "CLIENT_REFUSED_TO_RECEIVE",
+
+// 	"BDI-26": "PICKUP_DEADLINE_EXPIRED",
+// 	"BDE-26": "PICKUP_DEADLINE_EXPIRED",
+// 	"BDI-12": "PICKUP_DEADLINE_EXPIRED",
+// 	"FC-09": "PICKUP_DEADLINE_EXPIRED",
+// 	"BDR-26": "PICKUP_DEADLINE_EXPIRED",
+// 	"BDI-03": "PICKUP_DEADLINE_EXPIRED",
+// 	"BDR-12": "PICKUP_DEADLINE_EXPIRED",
+// 	"BDR-03": "PICKUP_DEADLINE_EXPIRED",
+
+// 	"BDE-80": "OUT_OF_POSTAL_FLOW",
+// 	"BDI-80": "OUT_OF_POSTAL_FLOW",
+// 	"BDR-80": "OUT_OF_POSTAL_FLOW",
+
+// 	"BDI-23": "ITEM_RETURNED_TO_SENDER",
+// 	"BDE-23": "ITEM_RETURNED_TO_SENDER",
+// 	"BDR-23": "ITEM_RETURNED_TO_SENDER",
+// 	"LDE-00": "ITEM_RETURNED_TO_SENDER",
+// 	"BDE-42": "ITEM_RETURNED_TO_SENDER",
+// 	"BDI-42": "ITEM_RETURNED_TO_SENDER",
+
+// 	"BDI-89": "INCORRECT_ADDRESS",
+// 	"BDE-98": "INCORRECT_ADDRESS",
+// 	"BDE-99": "INCORRECT_ADDRESS",
+// 	"BDI-99": "INCORRECT_ADDRESS",
+// 	"BDI-98": "INCORRECT_ADDRESS",
+// 	"BDE-82": "INCORRECT_ADDRESS",
+// 	"BDI-82": "INCORRECT_ADDRESS",
+// 	"BDR-07": "INCORRECT_ADDRESS",
+// 	"BDR-08": "INCORRECT_ADDRESS",
+// 	"BDR-99": "INCORRECT_ADDRESS",
+// 	"BDR-98": "INCORRECT_ADDRESS",
+// 	"BDE-08": "INCORRECT_ADDRESS",
+// 	"BDI-08": "INCORRECT_ADDRESS",
+// 	"BDE-07": "INCORRECT_ADDRESS",
+// 	"BDI-07": "INCORRECT_ADDRESS",
+// 	"BDR-82": "INCORRECT_ADDRESS",
+// 	"FC-04": "INCORRECT_ADDRESS",
+
+// 	"BDE-18": "MAIL_CARRIER_NOT_ASSISTED",
+// 	"BDI-18": "MAIL_CARRIER_NOT_ASSISTED",
+// 	"BDR-02": "MAIL_CARRIER_NOT_ASSISTED",
+// 	"BDR-18": "MAIL_CARRIER_NOT_ASSISTED",
+// 	"BDR-20": "MAIL_CARRIER_NOT_ASSISTED",
+// 	"FC-07": "MAIL_CARRIER_NOT_ASSISTED",
+// 	"BDI-25": "MAIL_CARRIER_NOT_ASSISTED",
+// 	"BDR-25": "MAIL_CARRIER_NOT_ASSISTED",
+// 	"BDE-02": "MAIL_CARRIER_NOT_ASSISTED",
+// 	"BDI-02": "MAIL_CARRIER_NOT_ASSISTED",
+// 	"BDE-20": "MAIL_CARRIER_NOT_ASSISTED",
+// 	"BDI-20": "MAIL_CARRIER_NOT_ASSISTED",
+// 	"BDE-25": "MAIL_CARRIER_NOT_ASSISTED",
+// };

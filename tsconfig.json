@@ -1,0 +1,92 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig", // Schema para validação e IntelliSense do tsconfig
+	"display": "Node 22 with Express", // Nome descritivo da configuração
+	"_version": "22.14.0", // Versão do Node.js para qual está otimizado
+	"compilerOptions": {
+		// === CONFIGURAÇÕES DE LINGUAGEM ===
+		"lib": [
+			"ES2023", // Inclui APIs do ES2023 (Array.toSorted, Object.groupBy, etc.)
+			"ES2023.Array", // Métodos específicos de Array do ES2023
+			"DOM" // APIs do DOM para possível uso em ferramentas de build
+		],
+		"module": "ESNext", // Usa o sistema de módulos mais recente (import/export)
+		"target": "ES2022", // Compila para ES2022 (compatível com Node.js v22)
+		"moduleResolution": "Bundler", // Resolução otimizada para bundlers modernos
+		// === CONFIGURAÇÕES DE STRICTNESS E QUALIDADE ===
+		"strict": true, // Ativa todas as verificações de tipo rigorosas
+		// "exactOptionalPropertyTypes": true, // Diferencia entre undefined e propriedade não definida
+		"noImplicitReturns": true, // Força retornos explícitos em todas as funções
+		// "noUnusedLocals": true, // Erro se houver variáveis locais não utilizadas
+		// "noUnusedParameters": true, // Erro se houver parâmetros não utilizados
+		// "noUncheckedIndexedAccess": true, // Força verificação de undefined em acessos array[index]
+		"noImplicitOverride": true, // Força uso da palavra-chave 'override' em métodos sobrescritos
+		// === CONFIGURAÇÕES DE MÓDULOS ===
+		"esModuleInterop": true, // Permite import default de módulos CommonJS
+		"allowSyntheticDefaultImports": true, // Permite import default mesmo sem export default
+		"forceConsistentCasingInFileNames": true, // Força consistência entre maiúsculas/minúsculas nos nomes
+		"resolveJsonModule": true, // Permite import de arquivos .json
+		"allowImportingTsExtensions": false, // Não permite import com extensões .ts/.tsx
+		// === CONFIGURAÇÕES DE PERFORMANCE ===
+		"skipLibCheck": true, // Pula verificação de tipos em arquivos .d.ts (mais rápido)
+		"incremental": true, // Habilita compilação incremental (cacheia resultados)
+		"tsBuildInfoFile": "./dist/.tsbuildinfo", // Arquivo de cache para compilação incremental
+		// === CONFIGURAÇÕES DE TIPOS ===
+		"typeRoots": [
+			"./node_modules/@types", // Diretório padrão para definições de tipos
+			"./src/@types" // Diretório customizado para tipos próprios
+		],
+		"types": [
+			"node", // Inclui tipos do Node.js (@types/node)
+			"express" // Inclui tipos do Express (@types/express)
+		],
+		// === CONFIGURAÇÕES DE PATHS ===
+		"baseUrl": "./", // Diretório base para resolução de módulos
+		"rootDir": "./src", // Diretório raiz dos arquivos TypeScript
+		"outDir": "./dist", // Diretório de saída para arquivos compilados
+		// === CONFIGURAÇÕES DE DECORATORS ===
+		"emitDecoratorMetadata": true, // Emite metadata para decorators (usado por frameworks)
+		"experimentalDecorators": true, // Habilita suporte experimental a decorators
+		// === CONFIGURAÇÕES DE SOURCEMAPS E DEBUGGING ===
+		"sourceMap": true, // Gera arquivos .map para debugging
+		"declaration": false, // Não gera arquivos .d.ts (não é biblioteca)
+		"removeComments": true, // Remove comentários do código compilado
+		// === MAPEAMENTO DE PATHS (ALIASES) ===
+		"paths": {
+			"@Config/*": [
+				"./src/Config/*" // Alias para diretório de configurações
+			],
+			"@Routes/*": [
+				"./src/Routes/*" // Alias para diretório de rotas
+			],
+			"@Shared/*": [
+				"./src/Shared/*" // Alias para código compartilhado
+			],
+			"@UseCases/*": [
+				"./src/UseCases/*" // Alias para casos de uso (Clean Architecture)
+			],
+			"@types/*": [
+				"./src/@types/*" // Alias para tipos customizados
+			]
+		}
+	},
+	// === ARQUIVOS A INCLUIR NA COMPILAÇÃO ===
+	"include": [
+		"src/**/*", // Todos os arquivos dentro de src/
+		"src/@types/**/*" // Garantia de inclusão dos tipos customizados
+	],
+	// === ARQUIVOS A EXCLUIR DA COMPILAÇÃO ===
+	"exclude": [
+		"node_modules", // Dependências externas
+		"dist", // Arquivos já compilados
+		"**/*.test.ts", // Arquivos de teste
+		"**/*.spec.ts", // Arquivos de especificação
+		"coverage", // Relatórios de cobertura de testes
+		"prisma/migrations", // Migrações do Prisma (não precisam de compilação)
+		"misc"
+	],
+	// === CONFIGURAÇÕES ESPECÍFICAS PARA TS-NODE/TSX ===
+	"ts-node": {
+		"esm": true, // Habilita suporte a ES Modules no ts-node
+		"experimentalSpecifierResolution": "node" // Resolução experimental para Node.js
+	}
+}

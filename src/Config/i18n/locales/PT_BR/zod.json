@@ -1,0 +1,60 @@
+{
+	"expected": {
+		"boolean": "verdadeiro ou falso",
+		"string": "um texto",
+		"number": "um número",
+		"bigint": "um número grande",
+		"object": "um objeto",
+		"array": "um array",
+		"date": "uma data",
+		"function": "uma função",
+		"symbol": "um símbolo",
+		"null": "nulo",
+		"undefined": "não definido"
+	},
+
+	"received": {
+		"boolean": "um valor booleano",
+		"string": "um texto",
+		"number": "um número",
+		"bigint": "um número grande",
+		"object": "um objeto",
+		"array": "um array",
+		"date": "uma data",
+		"function": "uma função",
+		"symbol": "um símbolo",
+		"null": "nulo",
+		"undefined": "não definido"
+	},
+
+	"invalid_type": "O campo '{{field}}' deve ser {{expected}}, recebido {{received}}",
+
+	"invalid_type_received_undefined": "O campo '{{field}}' é obrigatório",
+	"invalid_literal": "O campo '{{field}}' deve ser exatamente {{expected}}",
+
+	"invalid_string": "O campo '{{field}}' deve ser um {{validation}} válido",
+	"invalid_email": "O campo '{{field}}' deve ser um e-mail válido",
+	"invalid_url": "O campo '{{field}}' deve ser uma URL válida",
+	"invalid_regex": "O campo '{{field}}' deve corresponder ao regex /{{regex}}/",
+	"invalid_uuid": "O campo '{{field}}' deve ser um UUID válido",
+	"invalid_cuid": "O campo '{{field}}' deve ser um CUID válido",
+
+	"too_small_string": "O campo '{{field}}' deve ter pelo menos {{minimum}} caracteres",
+	"too_small_number": "O campo '{{field}}' deve ser pelo menos {{minimum}}",
+	"too_small_array": "O campo '{{field}}' deve conter pelo menos {{minimum}} itens",
+	"too_big_string": "O campo '{{field}}' deve ter no máximo {{maximum}} caracteres",
+	"too_big_number": "O campo '{{field}}' deve ser no máximo {{maximum}}",
+	"too_big_array": "O campo '{{field}}' deve conter no máximo {{maximum}} itens",
+	"not_multiple_of": "O campo '{{field}}' deve ser múltiplo de {{multipleOf}}",
+
+	"invalid_date": "O campo '{{field}}' deve ser uma data válida",
+
+	"invalid_enum_value": "Valor inválido para o campo '{{field}}'. Permitidos: {{options}}",
+	"invalid_union": "O campo '{{field}}' não corresponde a nenhum tipo válido",
+	"invalid_union_discriminator": "Valor discriminador inválido para o campo '{{field}}'",
+
+	"unrecognized_keys": "O campo '{{field}}' contém chaves não reconhecidas: {{keys}}",
+
+	"custom": "O campo '{{field}}' é inválido",
+	"body_failed": "Falha na validação"
+}

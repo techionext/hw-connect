@@ -1,0 +1,39 @@
+{
+	"cSpell.words": [
+		"asteasolutions",
+		"bigarena",
+		"cellspacing",
+		"chargeback",
+		"CHARGEBACK",
+		"cnpj",
+		"datasource",
+		"ECONT",
+		"exceljs",
+		"ISNS",
+		"josevictorm",
+		"keyuri",
+		"magiclink",
+		"nondefective",
+		"noopener",
+		"NORD",
+		"noreferrer",
+		"Nutralink",
+		"originalname",
+		"otpauth",
+		"otplib",
+		"PACKETA",
+		"POSTHA",
+		"qrcode",
+		"sedex",
+		"TIKTOK",
+		"tsyringe"
+	],
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "biomejs.biome",
+	"editor.codeActionsOnSave": {
+		"source.fixAll": "explicit",
+	},
+	"[prisma]": {
+		"editor.defaultFormatter": "Prisma.prisma"
+	}
+}
