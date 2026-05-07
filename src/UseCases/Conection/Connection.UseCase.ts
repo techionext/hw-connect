@@ -49,7 +49,7 @@ export class ConnectionUseCase {
 	async GetOrderById(orderId: string) {
 		try {
 			const params = {
-				order_number: orderId,
+				sub5: orderId,
 			};
 
 			const response = await axios.get(`https://api.sparkcrm.io/checkout/orders?${new URLSearchParams(params).toString()}`, {
@@ -73,22 +73,20 @@ export class ConnectionUseCase {
 
 	async execute(request: Request, _response: Response) {
 		const {
-			query: { orderId, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, ...rest },
+			query: { transaction_id, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, ...rest },
 		} = ZODVerifyParse({
 			schema: ConnectionRequestSchema,
 			request,
 		});
 
-		console.log({ rest });
-
 		await prisma.user.create({
 			data: {
 				id: handleGenerateUuid(),
-				data: JSON.stringify({ orderId, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, ...rest }),
+				data: JSON.stringify({ transaction_id, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, ...rest }),
 			},
 		});
 
-		const dataOrders = await this.GetOrderById(orderId);
+		const dataOrders = await this.GetOrderById(transaction_id);
 
 		if (!dataOrders) throw new AppError(ErrorDictionary.INTERN.unknown_error, 400);
 
@@ -99,7 +97,7 @@ export class ConnectionUseCase {
 		const normalizedStatus = this.mapSparkStatusToCanonical(order.status);
 
 		const payload = {
-			orderId,
+			orderId: transaction_id,
 			platform: "Everflow",
 			paymentMethod: "credit_card",
 			status: normalizedStatus,

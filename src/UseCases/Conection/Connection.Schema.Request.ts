@@ -6,7 +6,7 @@ export const ConnectionRequestSchema = zod.object({
 
 	query: zod
 		.object({
-			orderId: stringField(),
+			transaction_id: stringField(),
 			utmSource: stringField().optional().nullable(),
 			utmMedium: stringField().optional().nullable(),
 			utmCampaign: stringField().optional().nullable(),
