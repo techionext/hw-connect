@@ -1,0 +1,6 @@
+model user {
+  id   String @id
+  data Json
+
+  @@map("data")
+}

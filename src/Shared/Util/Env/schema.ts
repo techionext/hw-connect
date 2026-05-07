@@ -15,6 +15,8 @@ const envSchema = z.object({
 	SERVER_LANGUAGES: enumField(["PT_BR", "EN_US"]).default("PT_BR"), // aqui define novas linguagens
 
 	SPARKCRM_API_KEY: stringField(),
+
+	DATABASE_URL: stringField(),
 });
 
 const SchemaResult = envSchema.safeParse(process.env);

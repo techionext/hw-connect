@@ -1,6 +1,8 @@
+import { prisma } from "@Config/Prisma/prisma";
 import { zEnv } from "@Shared/Util/Env";
 import { AppError } from "@Shared/Util/Errors/AppError";
 import { ErrorDictionary } from "@Shared/Util/Errors/Dictionary";
+import { handleGenerateUuid } from "@Shared/Util/Helpers/Generators/GenerateUuid";
 import { ZODVerifyParse } from "@Shared/Util/ZOD/Parse";
 import axios, { isAxiosError } from "axios";
 import dayjs from "dayjs";
@@ -78,6 +80,13 @@ export class ConnectionUseCase {
 		});
 
 		console.log({ rest });
+
+		await prisma.user.create({
+			data: {
+				id: handleGenerateUuid(),
+				data: JSON.stringify({ orderId, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, ...rest }),
+			},
+		});
 
 		const dataOrders = await this.GetOrderById(orderId);
 

@@ -1,0 +1,16 @@
+enum userStatus {
+  ACTIVE
+  INACTIVE
+  BANNED
+}
+
+enum emailStatus {
+  VERIFIED
+  NOT_VERIFIED
+}
+
+enum platformRole {
+  USER
+  ROOT
+  ADMIN
+}

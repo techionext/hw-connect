@@ -10,4 +10,6 @@ export const zEnv = {
 	SERVER_LANGUAGES: envZod.data.SERVER_LANGUAGES,
 
 	SPARKCRM_API_KEY: envZod.data.SPARKCRM_API_KEY,
+
+	DATABASE_URL: envZod.data.DATABASE_URL,
 };
