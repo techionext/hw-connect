@@ -1,6 +1,4 @@
 import { zod } from "@Config/Swagger/ZodOpenApi";
-import { phoneField } from "@Shared/Util/ZOD/Fields/Custom/phone";
-import { tokenField } from "@Shared/Util/ZOD/Fields/Custom/token";
 import { stringField } from "@Shared/Util/ZOD/Fields/zod";
 
 export const ConnectionRequestSchema = zod.object({
