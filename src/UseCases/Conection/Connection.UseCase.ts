@@ -73,7 +73,7 @@ export class ConnectionUseCase {
 
 	async execute(request: Request, _response: Response) {
 		const {
-			query: { transaction_id, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, ...rest },
+			query: { transaction_id, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, payout_amount, ...rest },
 		} = ZODVerifyParse({
 			schema: ConnectionRequestSchema,
 			request,
@@ -102,7 +102,7 @@ export class ConnectionUseCase {
 			paymentMethod: "credit_card",
 			status: normalizedStatus,
 			createdAt: order.created_at,
-			approvedDate: order.transactions[0].created_at,
+			approvedDate: order.transactions[0]?.created_at || dayjs().toDate(),
 			refundedAt: normalizedStatus === "refunded" ? dayjs().toDate() : null,
 			customer: {
 				name: dataOrders.data[0].full_name,
@@ -129,9 +129,9 @@ export class ConnectionUseCase {
 				utm_term: order.utm_term || utmTerm || null,
 			},
 			commission: {
-				totalPriceInCents: Number(order.cart.total || 0) * 100,
-				gatewayFeeInCents: Number(order.cart.tax || 0) * 100,
-				userCommissionInCents: Number(order.cart.subtotal || 0) * 100,
+				totalPriceInCents: Number(payout_amount || 0) * 100,
+				gatewayFeeInCents: 0,
+				userCommissionInCents: Number(payout_amount || 0) * 100,
 				currency: order.currency || "BRL",
 			},
 			isTest: false,

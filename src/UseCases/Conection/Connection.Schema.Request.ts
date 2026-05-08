@@ -1,5 +1,5 @@
 import { zod } from "@Config/Swagger/ZodOpenApi";
-import { stringField } from "@Shared/Util/ZOD/Fields/zod";
+import { numberField, stringField } from "@Shared/Util/ZOD/Fields/zod";
 
 export const ConnectionRequestSchema = zod.object({
 	params: zod.object({}),
@@ -13,6 +13,7 @@ export const ConnectionRequestSchema = zod.object({
 			utmContent: stringField().optional().nullable(),
 			utmTerm: stringField().optional().nullable(),
 			token: stringField(),
+			payout_amount: numberField(),
 		})
 		.passthrough(),
 
