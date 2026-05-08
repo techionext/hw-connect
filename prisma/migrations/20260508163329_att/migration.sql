@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "type" AS ENUM ('INITIATE_CHECKOUT', 'PURCHASE');
+
+-- AlterTable
+ALTER TABLE "data" ADD COLUMN     "type" "type" NOT NULL DEFAULT 'PURCHASE';

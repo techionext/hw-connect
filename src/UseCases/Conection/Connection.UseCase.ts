@@ -83,6 +83,7 @@ export class ConnectionUseCase {
 			data: {
 				id: handleGenerateUuid(),
 				data: JSON.stringify({ transaction_id, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, ...rest }),
+				type: "PURCHASE",
 			},
 		});
 

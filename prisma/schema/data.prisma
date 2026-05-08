@@ -2,5 +2,12 @@ model user {
   id   String @id
   data Json
 
+  type type @default(PURCHASE)
+
   @@map("data")
+}
+
+enum type {
+  INITIATE_CHECKOUT
+  PURCHASE
 }
