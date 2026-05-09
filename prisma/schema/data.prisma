@@ -4,6 +4,9 @@ model user {
 
   type type @default(PURCHASE)
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   @@map("data")
 }
 

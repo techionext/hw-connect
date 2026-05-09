@@ -113,8 +113,6 @@ export class InitiateCheckoutUseCase {
 		};
 
 		try {
-			console.log({ body: JSON.stringify(body, null, 2) });
-
 			const res = await axios.post(`https://graph.facebook.com/v21.0/${pixelId}/events?access_token=${token}`, { data: body.data });
 			console.log(res.data);
 

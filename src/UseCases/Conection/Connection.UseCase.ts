@@ -82,7 +82,7 @@ export class ConnectionUseCase {
 		await prisma.user.create({
 			data: {
 				id: handleGenerateUuid(),
-				data: JSON.stringify({ transaction_id, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, ...rest }),
+				data: JSON.stringify({ transaction_id, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, payout_amount, ...rest }),
 				type: "PURCHASE",
 			},
 		});
