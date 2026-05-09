@@ -101,7 +101,7 @@ export class InitiateCheckoutUseCase {
 					custom_data: {
 						content_type: "product",
 						currency: order.currency,
-						value: payout_amount,
+						value: Number(payout_amount),
 						contents: order.cart.items.map((product) => ({
 							id: product.id,
 							quantity: product.quantity,

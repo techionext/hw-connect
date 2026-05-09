@@ -9,7 +9,7 @@ export const InitiateCheckoutRequestSchema = zod.object({
 			pixelId: stringField(),
 			token: stringField(),
 			transaction_id: stringField(),
-			payout_amount: numberField(),
+			payout_amount: zod.union([numberField(), stringField()]),
 		})
 		.passthrough(),
 

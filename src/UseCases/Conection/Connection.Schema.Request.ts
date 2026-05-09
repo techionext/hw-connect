@@ -13,7 +13,7 @@ export const ConnectionRequestSchema = zod.object({
 			utmContent: stringField().optional().nullable(),
 			utmTerm: stringField().optional().nullable(),
 			token: stringField(),
-			payout_amount: numberField(),
+			payout_amount: zod.union([numberField(), stringField()]),
 		})
 		.passthrough(),
 
