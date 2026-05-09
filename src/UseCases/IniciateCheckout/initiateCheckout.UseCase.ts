@@ -43,7 +43,7 @@ export class InitiateCheckoutUseCase {
 
 	async execute(request: Request, _response: Response) {
 		const {
-			query: { pixelId, token, transaction_id, payout_amount, ...rest },
+			query: { pixelid, token, transaction_id, payout_amount, ...rest },
 		} = ZODVerifyParse({
 			schema: InitiateCheckoutRequestSchema,
 			request,
@@ -52,7 +52,7 @@ export class InitiateCheckoutUseCase {
 		await prisma.user.create({
 			data: {
 				id: handleGenerateUuid(),
-				data: JSON.stringify({ pixelId, token, transaction_id, payout_amount, ...rest }),
+				data: JSON.stringify({ pixelid, token, transaction_id, payout_amount, ...rest }),
 				type: "INITIATE_CHECKOUT",
 			},
 		});
@@ -113,7 +113,7 @@ export class InitiateCheckoutUseCase {
 		};
 
 		try {
-			const res = await axios.post(`https://graph.facebook.com/v21.0/${pixelId}/events?access_token=${token}`, { data: body.data });
+			const res = await axios.post(`https://graph.facebook.com/v21.0/${pixelid}/events?access_token=${token}`, { data: body.data });
 			console.log(res.data);
 
 			return {
