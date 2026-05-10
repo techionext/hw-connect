@@ -125,6 +125,7 @@ export class ConnectionUseCase {
 						payoutAmount: Number(payout_amount || 0),
 						data: JSON.stringify({ transaction_id, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, payout_amount, ...rest }),
 						utmfyUsersId: utmfyUserId,
+						success: true,
 					},
 				});
 			} else {

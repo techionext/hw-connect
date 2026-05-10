@@ -24,29 +24,45 @@ export class TesteUseCase {
 			request,
 		});
 
-		// const datas = await prisma.user.findMany({
-		// 	where: {
-		// 		type: "PURCHASE"
-		// 	}
-		// })
+		const datas = await prisma.user.findMany({
+			where: {
+				type: "PURCHASE"
+			}
+		})
 
-		// for(const data of datas) {
-		// 	try {
-		// 		const params = JSON.parse(data.data);
-		// 		console.log(params);
+		console.log(datas.length);
 
-		// 		await axios.get(`http://localhost:3333/connection`, {
-		// 			params
-		// 		})
+		const ids = ["8178e54beea64ead9031da8d5cc4b897",
+			"cf94394bcfcd4857b58f983ccb187c1f",
+			"7b386b0c1b934c6a91193853f380182e",
+			"7f13442cb6134db199bdcce214c70a34",
+			"a72f3f3f7ff64a6fbc60ce1d07d734cc",
+			"621d1a46c0524d7ab688167196135e28",
+			"c32850d9789d43a2ac884415b69abaf0",	
+			"7565bedec10540db9b7def703c801075",
+			"4948f11820d74a95b05bd204cc01ad14",
+			"750e22e9615e4dbd83b0c74b8b52d88c"]
+
+		for(const data of datas) {
+			try {
+				const params = JSON.parse(data.data);
+
+				if(params.transaction_id && ids.includes(params.transaction_id)) {
+					console.log("Transaction id found", params);
+				}
+
+				// await axios.get(`http://localhost:3333/connection`, {
+				// 	params
+				// })
 				
-		// 	} catch (error) {
-		// 		if (isAxiosError(error)) {
-		// 			console.log(error.response?.data);
-		// 		} else {
-		// 			console.log(error);
-		// 		}
-		// 	}
-		// }
+			} catch (error) {
+				if (isAxiosError(error)) {
+					console.log(error.response?.data);
+				} else {
+					console.log(error);
+				}
+			}
+		}
 
 		return { message: "Teste successful" };
 	}
