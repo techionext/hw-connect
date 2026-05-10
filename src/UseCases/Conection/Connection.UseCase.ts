@@ -78,67 +78,110 @@ export class ConnectionUseCase {
 			schema: ConnectionRequestSchema,
 			request,
 		});
+		
+		const dataUsersId = handleGenerateUuid();
 
-		await prisma.user.create({
-			data: {
-				id: handleGenerateUuid(),
-				data: JSON.stringify({ transaction_id, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, payout_amount, ...rest }),
-				type: "PURCHASE",
-			},
-		});
-
-		const dataOrders = await this.GetOrderById(transaction_id);
-
-		if (!dataOrders) throw new AppError(ErrorDictionary.INTERN.unknown_error, 400);
-
-		const order = dataOrders.data[0].orders[0];
-
-		if (!order) throw new AppError(ErrorDictionary.INTERN.unknown_error, 400);
-
-		const normalizedStatus = this.mapSparkStatusToCanonical(order.status);
-
-		const payload = {
-			orderId: transaction_id,
-			platform: "Everflow",
-			paymentMethod: "credit_card",
-			status: normalizedStatus,
-			createdAt: order.created_at,
-			approvedDate: order.transactions[0]?.created_at || dayjs().toDate(),
-			refundedAt: normalizedStatus === "refunded" ? dayjs().toDate() : null,
-			customer: {
-				name: dataOrders.data[0].full_name,
-				email: dataOrders.data[0].email,
-				phone: dataOrders.data[0].phone,
-				document: null,
-				country: dataOrders.data[0].addresses[0].country_code || "BR",
-			},
-			products: order.cart.items.map((item) => ({
-				id: item.id,
-				name: item.name,
-				planId: null,
-				planName: null,
-				quantity: item.quantity,
-				priceInCents: Number(item.unit_price || 0) * 100,
-			})),
-			trackingParameters: {
-				src: null,
-				sck: null,
-				utm_source: order.utm_source || utmSource || null,
-				utm_campaign: order.utm_campaign || utmCampaign || null,
-				utm_medium: order.utm_medium || utmMedium || null,
-				utm_content: order.utm_content || utmContent || null,
-				utm_term: order.utm_term || utmTerm || null,
-			},
-			commission: {
-				totalPriceInCents: Number(payout_amount || 0) * 100,
-				gatewayFeeInCents: 0,
-				userCommissionInCents: Number(payout_amount || 0) * 100,
-				currency: order.currency || "BRL",
-			},
-			isTest: false,
-		};
-
+		let saleId = handleGenerateUuid();
+		
 		try {
+			const utmfyUser = await prisma.utmfyUsers.findFirst({
+				where: {
+					tokenUtmfy: token,
+				},
+			});
+			
+			const utmfyUserId = utmfyUser?.id || handleGenerateUuid();
+	
+			if (!utmfyUser) {
+				await prisma.utmfyUsers.create({
+					data: {
+						id: utmfyUserId,
+						tokenUtmfy: token,
+					},
+				});
+			}
+	
+			await prisma.dataUsers.create({
+				data: {
+					id: dataUsersId,
+					data: JSON.stringify({ transaction_id, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, payout_amount, ...rest }),
+					type: "PURCHASE",
+					utmfyUsersId: utmfyUserId,
+					success: true,
+				},
+			})
+	
+			const dataSale = await prisma.sales.findFirst({
+				where: {
+					transactionId: transaction_id,
+				},
+			});
+	
+			if (!dataSale) {
+				await prisma.sales.create({
+					data: {
+						id: saleId,
+						transactionId: transaction_id,
+						payoutAmount: Number(payout_amount || 0),
+						data: JSON.stringify({ transaction_id, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, payout_amount, ...rest }),
+						utmfyUsersId: utmfyUserId,
+					},
+				});
+			} else {
+				saleId = dataSale.id;
+			}
+	
+			const dataOrders = await this.GetOrderById(transaction_id);
+	
+			if (!dataOrders) throw new AppError(ErrorDictionary.INTERN.unknown_error, 400);
+	
+			const order = dataOrders.data[0].orders[0];
+	
+			if (!order) throw new AppError(ErrorDictionary.INTERN.unknown_error, 400);
+	
+			const normalizedStatus = this.mapSparkStatusToCanonical(order.status);
+	
+			const payload = {
+				orderId: transaction_id,
+				platform: "Everflow",
+				paymentMethod: "credit_card",
+				status: normalizedStatus,
+				createdAt: order.created_at,
+				approvedDate: order.transactions[0]?.created_at || dayjs().toDate(),
+				refundedAt: normalizedStatus === "refunded" ? dayjs().toDate() : null,
+				customer: {
+					name: dataOrders.data[0].full_name,
+					email: dataOrders.data[0].email,
+					phone: dataOrders.data[0].phone,
+					document: null,
+					country: dataOrders.data[0].addresses[0].country_code || "BR",
+				},
+				products: order.cart.items.map((item) => ({
+					id: item.id,
+					name: item.name,
+					planId: null,
+					planName: null,
+					quantity: item.quantity,
+					priceInCents: Number(item.unit_price || 0) * 100,
+				})),
+				trackingParameters: {
+					src: null,
+					sck: null,
+					utm_source: order.utm_source || utmSource || null,
+					utm_campaign: order.utm_campaign || utmCampaign || null,
+					utm_medium: order.utm_medium || utmMedium || null,
+					utm_content: order.utm_content || utmContent || null,
+					utm_term: order.utm_term || utmTerm || null,
+				},
+				commission: {
+					totalPriceInCents: Number(payout_amount || 0) * 100,
+					gatewayFeeInCents: 0,
+					userCommissionInCents: Number(payout_amount || 0) * 100,
+					currency: order.currency || "BRL",
+				},
+				isTest: false,
+			};
+
 			await axios.post("https://api.utmify.com.br/api-credentials/orders", payload, {
 				headers: {
 					"Content-Type": "application/json",
@@ -151,7 +194,28 @@ export class ConnectionUseCase {
 			} else {
 				console.log(error);
 			}
+
+			await prisma.dataUsers.update({
+				where: {
+					id: dataUsersId,
+				},
+				data: {
+					success: false,
+				},
+			});
+
+			await prisma.sales.update({
+				where: {
+					id: saleId,
+				},
+				data: {
+					success: false,
+				},
+			});
+
+			throw new AppError(ErrorDictionary.INTERN.unknown_error, 400);
 		}
+
 
 		return { message: "Connection successful" };
 	}

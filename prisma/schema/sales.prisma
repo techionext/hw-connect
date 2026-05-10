@@ -1,0 +1,18 @@
+model sales {
+  id String @id
+
+  payoutAmount  Int
+  transactionId String
+
+  data Json
+
+  success Boolean @default(false)
+
+  utmfyUsersId String
+  utmfyUsers   utmfyUsers @relation(fields: [utmfyUsersId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("sales")
+}

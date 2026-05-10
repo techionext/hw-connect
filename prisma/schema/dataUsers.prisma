@@ -1,0 +1,21 @@
+model dataUsers {
+  id   String @id
+  data Json
+
+  type type @default(PURCHASE)
+
+  success Boolean @default(false)
+
+  utmfyUsersId String
+  utmfyUsers   utmfyUsers @relation(fields: [utmfyUsersId], references: [id])
+  createdAt    DateTime   @default(now())
+
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("dataUsers")
+}
+
+enum dataUsersType {
+  INITIATE_CHECKOUT
+  PURCHASE
+}

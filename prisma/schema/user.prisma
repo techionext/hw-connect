@@ -1,0 +1,13 @@
+model utmfyUsers {
+  id         String @id
+  tokenUtmfy String
+
+  sales sales[]
+
+  dataUsers dataUsers[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("utmfyUsers")
+}
