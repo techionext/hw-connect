@@ -1,0 +1,13 @@
+model userPixel {
+  id String @id
+  pixelId String
+
+  dataPixel dataPixel[]
+
+  sales sales[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("userPixel")
+}

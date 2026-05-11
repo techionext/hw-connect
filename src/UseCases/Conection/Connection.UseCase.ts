@@ -105,7 +105,6 @@ export class ConnectionUseCase {
 				data: {
 					id: dataUsersId,
 					data: JSON.stringify({ transaction_id, utmSource, utmMedium, utmCampaign, utmContent, utmTerm, token, payout_amount, ...rest }),
-					type: "PURCHASE",
 					utmfyUsersId: utmfyUserId,
 					success: true,
 				},

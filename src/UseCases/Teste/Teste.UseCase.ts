@@ -43,18 +43,15 @@ export class TesteUseCase {
 			"4948f11820d74a95b05bd204cc01ad14",
 			"750e22e9615e4dbd83b0c74b8b52d88c"]
 
-		for(const data of datas) {
+		for(const id of ids) {
 			try {
-				const params = JSON.parse(data.data);
-
-				if(params.transaction_id && ids.includes(params.transaction_id)) {
-					console.log("Transaction id found", params);
-				}
-
-				// await axios.get(`http://localhost:3333/connection`, {
-				// 	params
-				// })
-				
+				await axios.get(`https://hw-connect-production.up.railway.app/connection`, {
+					params: {
+						transaction_id: id,
+						token: "OHxhArViMquyuZpFCy0TEH8p0OEfObORjRdI",
+						payout_amount: 245,
+					}
+				})
 			} catch (error) {
 				if (isAxiosError(error)) {
 					console.log(error.response?.data);

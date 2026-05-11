@@ -8,8 +8,11 @@ model sales {
 
   success Boolean @default(false)
 
-  utmfyUsersId String
-  utmfyUsers   utmfyUsers @relation(fields: [utmfyUsersId], references: [id])
+  utmfyUsersId String?
+  utmfyUsers   utmfyUsers? @relation(fields: [utmfyUsersId], references: [id])
+
+  userPixelId String?
+  userPixel   userPixel? @relation(fields: [userPixelId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

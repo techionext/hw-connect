@@ -49,70 +49,120 @@ export class InitiateCheckoutUseCase {
 			request,
 		});
 
-		await prisma.user.create({
-			data: {
-				id: handleGenerateUuid(),
-				data: JSON.stringify({ pixelid, token, transaction_id, payout_amount, ...rest }),
-				type: "INITIATE_CHECKOUT",
-			},
-		});
-
-		const dataOrders = await this.GetOrderById(transaction_id);
-
-		if (!dataOrders) throw new AppError(ErrorDictionary.INTERN.unknown_error, 400);
-
-		const order = dataOrders.data[0].orders[0];
-
-		if (!order) throw new AppError(ErrorDictionary.INTERN.unknown_error, 400);
-
-		const address = dataOrders.data[0].addresses[0];
-
-		const orderCreatedAt = dayjs(order?.created_at);
-		const now = dayjs();
-		const eventTime = orderCreatedAt.isAfter(now) ? now.unix() : orderCreatedAt.unix();
-
-		const body = {
-			data: [
-				{
-					event_id: handleGenerateUuid(),
-					event_name: "InitiateCheckout",
-					event_time: eventTime,
-					action_source: "website",
-					event_source_url: "",
-					user_data: {
-						em: generateTextSHA256(dataOrders.data[0]?.email || ""),
-						ph: dataOrders.data[0]?.phone ? generateTextSHA256(dataOrders.data[0]?.phone as string) : undefined,
-						fn: generateTextSHA256(dataOrders.data[0]?.first_name || ""),
-						ln: generateTextSHA256(dataOrders.data[0]?.last_name || ""),
-
-						ct: address?.city ? generateTextSHA256(normalizeState(address.city)) : undefined,
-						st: address?.state_province ? generateTextSHA256(normalizeState(address.state_province)) : undefined,
-						zp: address?.postal_code ? generateTextSHA256(address.postal_code) : undefined,
-						country: address?.country_code ? generateTextSHA256(address.country_code) : undefined,
-
-						external_id: dataOrders.data[0]?.customer_number ? generateTextSHA256(dataOrders.data[0]?.customer_number) : undefined,
-						subscription_id: undefined,
-
-						client_ip_address: undefined,
-						client_user_agent: undefined,
-						fbc: undefined,
-						fbp: generateFbp(),
-					},
-					custom_data: {
-						content_type: "product",
-						currency: order.currency,
-						value: Number(payout_amount),
-						contents: order.cart.items.map((product) => ({
-							id: product.id,
-							quantity: product.quantity,
-							value: product.unit_price,
-						})),
-					},
-				},
-			],
-		};
+		let dataSaleId = handleGenerateUuid();
 
 		try {
+			const dataUser = await prisma.userPixel.findFirst({
+				where: {
+					pixelId: pixelid,
+				},
+			});
+
+			const dataUserId = dataUser?.id || handleGenerateUuid();
+
+			if (!dataUser) {
+				await prisma.userPixel.create({
+					data: {
+						id: dataUserId,
+						pixelId: pixelid,
+					},
+				});
+			}
+
+			await prisma.dataPixel.create({
+				data: {
+					id: handleGenerateUuid(),
+					data: JSON.stringify({ pixelid, token, transaction_id, payout_amount, ...rest }),
+					userPixelId: dataUserId,
+				},
+			});
+
+			const dataSale = await prisma.sales.findFirst({
+				where: {
+					transactionId: transaction_id,
+				},
+			});
+
+			if (dataSale) {
+				dataSaleId = dataSale.id;
+				await prisma.sales.update({
+					where: {
+						id: dataSaleId,
+					},
+					data: {
+						userPixelId: dataUserId,
+					},
+				});
+			}
+
+			if (!dataSale) {
+				await prisma.sales.create({
+					data: {
+						id: dataSaleId,
+						transactionId: transaction_id,
+						payoutAmount: Number(payout_amount || 0),
+						data: JSON.stringify({ pixelid, token, transaction_id, payout_amount, ...rest }),
+						userPixelId: dataUserId,
+						success: true,
+					},
+				});
+			}
+
+			const dataOrders = await this.GetOrderById(transaction_id);
+
+			if (!dataOrders) throw new AppError(ErrorDictionary.INTERN.unknown_error, 400);
+
+			const order = dataOrders.data[0].orders[0];
+
+			if (!order) throw new AppError(ErrorDictionary.INTERN.unknown_error, 400);
+
+			const address = dataOrders.data[0].addresses[0];
+
+			const orderCreatedAt = dayjs(order?.created_at);
+			const now = dayjs();
+			const eventTime = orderCreatedAt.isAfter(now) ? now.unix() : orderCreatedAt.unix();
+
+			const body = {
+				data: [
+					{
+						event_id: handleGenerateUuid(),
+						event_name: "InitiateCheckout",
+						event_time: eventTime,
+						action_source: "website",
+						event_source_url: "",
+						user_data: {
+							em: generateTextSHA256(dataOrders.data[0]?.email || ""),
+							ph: dataOrders.data[0]?.phone ? generateTextSHA256(dataOrders.data[0]?.phone as string) : undefined,
+							fn: generateTextSHA256(dataOrders.data[0]?.first_name || ""),
+							ln: generateTextSHA256(dataOrders.data[0]?.last_name || ""),
+
+							ct: address?.city ? generateTextSHA256(normalizeState(address.city)) : undefined,
+							st: address?.state_province ? generateTextSHA256(normalizeState(address.state_province)) : undefined,
+							zp: address?.postal_code ? generateTextSHA256(address.postal_code) : undefined,
+							country: address?.country_code ? generateTextSHA256(address.country_code) : undefined,
+
+							external_id: dataOrders.data[0]?.customer_number ? generateTextSHA256(dataOrders.data[0]?.customer_number) : undefined,
+							subscription_id: undefined,
+
+							client_ip_address: undefined,
+							client_user_agent: undefined,
+							fbc: undefined,
+							fbp: generateFbp(),
+						},
+						custom_data: {
+							content_type: "product",
+							currency: order.currency,
+							value: Number(payout_amount),
+							contents: order.cart.items.map((product) => ({
+								id: product.id,
+								quantity: product.quantity,
+								value: product.unit_price,
+							})),
+						},
+					},
+				],
+			};
+
 			const res = await axios.post(`https://graph.facebook.com/v21.0/${pixelid}/events?access_token=${token}`, { data: body.data });
 			console.log(res.data);
 
@@ -126,6 +176,15 @@ export class InitiateCheckoutUseCase {
 			} else {
 				console.log(error);
 			}
+
+			await prisma.sales.update({
+				where: {
+					id: dataSaleId,
+				},
+				data: {
+					success: false,
+				},
+			});
 		}
 
 		return { message: "InitiateCheckout successful" };

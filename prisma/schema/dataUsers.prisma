@@ -2,8 +2,6 @@ model dataUsers {
   id   String @id
   data Json
 
-  type type @default(PURCHASE)
-
   success Boolean @default(false)
 
   utmfyUsersId String
@@ -13,9 +11,4 @@ model dataUsers {
   updatedAt DateTime @default(now()) @updatedAt
 
   @@map("dataUsers")
-}
-
-enum dataUsersType {
-  INITIATE_CHECKOUT
-  PURCHASE
 }

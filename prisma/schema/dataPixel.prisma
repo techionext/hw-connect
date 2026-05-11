@@ -1,0 +1,12 @@
+model dataPixel {
+  id String @id
+  data Json
+
+  userPixelId String
+  userPixel   userPixel @relation(fields: [userPixelId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("dataPixel")
+}
